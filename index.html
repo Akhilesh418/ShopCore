@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>ShopCore - Home</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <link rel="stylesheet" href="./src/style.css">
+    
+    <script>
+        if (!localStorage.getItem('store_user')) {
+            // .replace() is used over .href so the user can't use the back button to return to the protected page
+            window.location.replace('registration.html'); 
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top border-bottom border-secondary shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fs-3" href="index.html" style="letter-spacing: -0.5px;">
+                <span class="fw-bold" style="color: #0dcaf0;">Shop</span><span class="text-warning fw-bold">Core</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <form class="d-flex mx-auto position-relative" id="searchForm" style="width: 70%; max-width: 600px;">
+                    <input class="form-control me-2" type="search" id="searchInput" placeholder="Search products..." autocomplete="off" aria-label="Search">
+                    
+                    <div id="searchSuggestions" class="list-group position-absolute w-100 shadow" style="top: 100%; z-index: 1050; display: none; max-height: 350px; overflow-y: auto; overflow-x: hidden;">
+                    </div>
+                </form>
+                
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item ms-2 me-2 d-flex align-items-center">
+                        <button class="btn btn-link text-white text-decoration-none border-0" id="themeToggle" aria-label="Toggle Dark Mode" title="Toggle Dark Mode">
+                            <i class="bi bi-moon-stars-fill fs-5" id="themeIcon"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="account.html" id="authLink" aria-label="My Account" title="My Account">
+                            <i class="bi bi-person-circle fs-4"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <button class="btn btn-outline-light position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-label="Open Cart">
+                            <i class="bi bi-cart3 fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge" style="font-size: 0.7rem;">0</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="position-relative overflow-hidden mb-5 bg-body border-bottom shadow-sm">
+        <div class="container py-5">
+            <div class="row align-items-center py-4">
+                
+                <div class="col-lg-7 text-center text-lg-start pe-lg-5">
+                    <p class="text-uppercase fw-bold mb-2" style="letter-spacing: 2px; color: #6c757d; font-size: 0.85rem;">
+                        ShopCore Collection
+                    </p>
+                    <h1 class="display-4 fw-bold mb-3" style="letter-spacing: -1px;">
+                        <span class="fw-bold" style="color: #0dcaf0;">Elevate </span>Your <br>Everyday <span class="text-warning fw-bold">Lifestyle.</span>
+                    </h1>
+                    <p class="lead text-muted mb-4 fw-normal" style="line-height: 1.6;">
+                        Discover our newly curated selection of premium electronics, contemporary fashion, and modern accessories designed for the way you live.
+                    </p>
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center justify-content-lg-start">
+                        <button type="button" class="btn btn-primary btn-lg px-5 py-3 text-uppercase fw-bold" style="letter-spacing: 1px; font-size: 0.9rem;" onclick="window.scrollTo({top: document.getElementById('productGrid').offsetTop - 100, behavior: 'smooth'})">
+                            Explore the Curation
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="col-lg-5 d-none d-lg-block">
+                    <img src="https://img.magnific.com/free-photo/black-friday-elements-assortment_23-2149074075.jpg?semt=ais_hybrid&w=740&q=80" class="img-fluid rounded shadow-sm border" alt="Premium Lifestyle Collection" style="object-fit: cover; height: 400px; width: 100%;">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mb-5">
+        <div class="row">
+           
+           <aside class="col-md-3 mb-4">
+                <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm bg-dark" style="width: 45px; height: 45px;">
+                        <i class="bi bi-funnel-fill fs-5" style="color: #ffc107;"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-0 fw-bold text-uppercase text-body" style="letter-spacing: 1px;">Filters</h5>
+                        <small class="text-muted" style="font-size: 0.75rem; letter-spacing: 0.5px;">REFINE YOUR SEARCH</small>
+                    </div>
+                </div>
+                
+                <div class="list-group shadow-sm">
+                    <button type="button" class="list-group-item list-group-item-action active category-btn" onclick="window.filterCategory('all', this)">All Products</button>
+                    <button type="button" class="list-group-item list-group-item-action category-btn" onclick="window.filterCategory('electronics', this)">Electronics</button>
+                    <button type="button" class="list-group-item list-group-item-action category-btn" onclick="window.filterCategory('jewelery', this)">Accessories</button>
+                    <button type="button" class="list-group-item list-group-item-action category-btn" onclick="window.filterCategory('men\'s clothing', this)">Men's Fashion</button>
+                    <button type="button" class="list-group-item list-group-item-action category-btn" onclick="window.filterCategory('women\'s clothing', this)">Women's Fashion</button>
+                </div>
+                
+                <div class="mb-5 mt-4">
+                    <h6 class="text-uppercase fw-bold text-muted mb-3">Filter by Price</h6>
+                    <label for="priceRange" class="form-label d-flex justify-content-between small">
+                        <span>₹0</span>
+                        <span id="priceDisplay" class="fw-bold text-primary">₹100,000</span>
+                    </label>
+                    <input type="range" class="form-range" id="priceRange" min="0" max="100000" step="500" value="100000">
+                </div>
+            </aside>
+            
+            <section class="col-md-9">
+                <div class="row" id="productGrid"></div>
+            </section>
+        </div>
+    </main>
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="cartOffcanvasLabel">Your Cart</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column">
+            <div id="cartItemsContainer" class="flex-grow-1 overflow-auto"></div>
+            
+            <div class="border-top pt-3 mt-3">
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted">Subtotal:</span>
+                    <strong id="cartSubtotal" class="fs-5">₹0.00</strong>
+                </div>
+                <a href="cart.html" class="btn btn-outline-primary w-100 mb-2 py-2 fw-bold">View Full Cart</a>
+                <button class="btn btn-primary w-100 py-2 fw-bold" onclick="window.goToCheckout()">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+
+<footer class="shopcore-footer mt-5 pt-5 pb-3">
+    <div class="container">
+        
+        <div class="row mb-4">
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h3 class="mb-3 fw-normal text-white">Shop Non-Stop on <span class="fw-bold" style="color: #0dcaf0;">Shop</span><span class="text-warning fw-bold">Core</span></h3>
+                <p class="text-white small mb-4">Trusted by millions of shoppers<br>Cash on Delivery Available</p>
+                
+                <div class="d-flex flex-column gap-2">
+                    <a href="https://play.google.com" target="_blank" rel="noopener noreferrer" class="btn btn-dark border d-flex align-items-center justify-content-center py-2" style="border-color: #333 !important;" aria-label="Download on Google Play">
+                        <i class="bi bi-google-play fs-4 me-2" aria-hidden="true"></i> 
+                        <div class="text-start lh-1">
+                            <small style="font-size: 0.6rem; text-transform: uppercase;">GET IT ON</small><br>
+                            <span class="fw-bold">Google Play</span>
+                        </div>
+                    </a>
+                    
+                    <a href="https://apple.com/app-store" target="_blank" rel="noopener noreferrer" class="btn btn-dark border d-flex align-items-center justify-content-center py-2" style="border-color: #333 !important;" aria-label="Download on the App Store">
+                        <i class="bi bi-apple fs-4 me-2" aria-hidden="true"></i> 
+                        <div class="text-start lh-1">
+                            <small style="font-size: 0.6rem; text-transform: uppercase;">Available on the</small><br>
+                            <span class="fw-bold">App Store</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h6 class="text-uppercase fw-bold text-white mb-3" style="letter-spacing: 1px;">Company</h6>
+                <nav aria-label="Company Links">
+                    <ul class="list-unstyled footer-links">
+                        <li class="mb-2"><a href="#">Careers</a></li>
+                        <li class="mb-2"><a href="#">Become a supplier</a></li>
+                        <li class="mb-2"><a href="#">Hall of Fame</a></li>
+                        <li class="mb-2"><a href="#">Sitemap</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h6 class="text-uppercase fw-bold text-white mb-3" style="letter-spacing: 1px;">Legal and Policies</h6>
+                <nav aria-label="Legal Links">
+                    <ul class="list-unstyled footer-links mb-4">
+                        <li class="mb-2"><a href="#">ShopCore Tech Blog</a></li>
+                        <li class="mb-2"><a href="#">Notices and Returns</a></li>
+                    </ul>
+                </nav>
+                
+                <h6 class="text-uppercase fw-bold text-white mb-3" style="letter-spacing: 1px;">Reach out to us</h6>
+                <div class="d-flex gap-2 social-icons">
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="bg-primary" aria-label="Visit our Facebook page"><i class="bi bi-facebook" aria-hidden="true"></i></a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" style="background: #e1306c;" aria-label="Visit our Instagram page"><i class="bi bi-instagram" aria-hidden="true"></i></a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="bg-danger" aria-label="Visit our YouTube channel"><i class="bi bi-youtube" aria-hidden="true"></i></a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="bg-info" aria-label="Visit our LinkedIn page"><i class="bi bi-linkedin" aria-hidden="true"></i></a>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="bg-success" aria-label="Contact us on WhatsApp"><i class="bi bi-whatsapp" aria-hidden="true"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mb-4">
+                <h6 class="text-uppercase fw-bold text-white mb-3" style="letter-spacing: 1px;">Contact Us</h6>
+                <address class="text-white small mb-0 lh-lg" style="font-style: normal;">
+                    <span class="text-white">ShopCore Technologies Private Limited</span><br>
+                    <span class="text-white">CIN: U62099KA2024PTC186568</span><br>
+                    3rd Floor, Wing-E, Helios Business Park,<br>
+                    Tech District, Hyderabad, Telangana,<br>
+                    India, 500081<br>
+                    <span class="text-white">E-mail:</span> <a href="mailto:legalsupport@shopcore.com" class="text-white-50 text-decoration-none border-bottom border-secondary">legalsupport@shopcore.com</a>
+                </address>
+            </div>
+        </div>
+
+        <div class="accordion accordion-flush footer-accordion mb-4" id="footerAccordion">
+            <div class="accordion-item bg-transparent border-top border-bottom" style="border-color: #333 !important;">
+                <h2 class="accordion-header" id="headingMore">
+                    <button class="accordion-button collapsed bg-transparent text-white shadow-none px-0 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMore" aria-expanded="false" aria-controls="collapseMore">
+                        More About ShopCore
+                    </button>
+                </h2>
+                <div id="collapseMore" class="accordion-collapse collapse" aria-labelledby="headingMore" data-bs-parent="#footerAccordion">
+                    <div class="accordion-body px-0 text-muted small pb-4">
+                        
+                        <h6 class="text-white mt-3">Discover a World of Affordable Fashion & Everyday Essentials</h6>
+                        <p class="text-white-50">Upgrade your wardrobe and stock your home with the latest trends and essentials at prices designed for everyday value. ShopCore offers a vast selection of products across all categories, ensuring you find everything you need at prices suited for everyday budgets.</p>
+
+                        <h6 class="text-white mt-4">Shop Millions of Products Across All Categories</h6>
+                        <p class="text-white-50">From trendy fashion finds to essential homeware, ShopCore is your one-stop shop for everything you need. Explore millions of products across a wide variety of categories.</p>
+
+                        <h6 class="text-white mt-4" style="color: #0dcaf0 !important;">Online Shopping</h6>
+                        
+                        <p class="mb-1 text-white">Electronics</p>
+                        <p class="category-cloud">
+                            <a href="#">Smartphones</a> | <a href="#">Laptops</a> | <a href="#">Bluetooth Speakers</a> | <a href="#">Smart Watches</a> | <a href="#">Headphones</a> | <a href="#">Data Cables</a>
+                        </p>
+
+                        <p class="mb-1 text-white mt-3">Fashion</p>
+                        <p class="category-cloud mb-0">
+                            <a href="#">Men's Wear</a> | <a href="#">Women's Western</a> | <a href="#">Ethnic Wear</a> | <a href="#">Footwear</a> | <a href="#">Accessories</a>
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center pt-3 mt-3 border-top" style="border-color: #222 !important;">
+            <p class="text-white small mb-0">&copy; 2026 <span class="fw-bold" style="color: #0dcaf0;">Shop</span><span class="text-warning fw-bold">Core</span>. All Rights Reserved.</p>
+            <nav aria-label="Legal Bottom Links">
+                <ul class="list-inline text-white small mb-0 footer-bottom-links">
+                    <li class="list-inline-item me-3"><a href="#">Privacy Policy</a></li>
+                    <li class="list-inline-item me-3"><a href="#">Terms of Service</a></li>
+                    <li class="list-inline-item"><a href="#">Refund Policy</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</footer>
+    <template id="productCardTemplate">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 product-card shadow-sm bg-body-tertiary border">
+                <div class="product-link" style="cursor: pointer;" tabindex="0">
+                    <div class="bg-body-tertiary p-3 text-center rounded-top">
+                        <img class="img-fluid prod-img" src="" alt="Product Image" style="height: 200px; object-fit: contain;">
+                    </div>
+                    <div class="card-body pb-0">
+                        <h5 class="card-title text-truncate prod-title"></h5>
+                        <p class="card-text fw-bold prod-price"></p>
+                    </div>
+                </div>
+                <div class="card-body pt-2 mt-auto">
+                    <button class="btn btn-outline-primary w-100 mb-2 btn-add">Add to Cart</button>
+                    <button class="btn btn-primary w-100 btn-buy">Buy Now</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="skeletonCardTemplate">
+        <div class="col-md-4 mb-4 skeleton-card">
+            <div class="card p-2 bg-body-tertiary">
+                <div class="bg-secondary" style="height: 250px; opacity: 0.2; border-radius: 4px;"></div>
+            </div>
+        </div>
+    </template>
+    
+    <template id="cartItemTemplate">
+        <div class="d-flex flex-column mb-3 border-bottom pb-3">
+            <div class="d-flex align-items-center mb-3">
+                <img class="cart-item-img bg-body-secondary p-1 rounded border" src="" alt="Cart Item" style="width: 60px; height: 60px; object-fit: contain;">
+                <div class="ms-3 flex-grow-1 overflow-hidden">
+                    <h6 class="mb-1 text-truncate cart-item-title" style="font-size: 0.9rem;"></h6>
+                    <span class="text-primary fw-bold cart-item-price" style="font-size: 0.95rem;"></span>
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center bg-body-secondary rounded border p-1">
+                    <button class="btn btn-sm bg-transparent text-white border-0 px-2 btn-minus" aria-label="Decrease Quantity"><i class="bi bi-dash"></i></button>
+                    <span class="mx-3 fw-bold cart-item-qty" style="font-size: 0.9rem;"></span>
+                    <button class="btn btn-sm bg-transparent text-white border-0 px-2 btn-plus" aria-label="Increase Quantity"><i class="bi bi-plus"></i></button>
+                </div>
+                <button class="btn btn-sm btn-outline-danger btn-remove" aria-label="Remove Item">
+                    <i class="bi bi-trash3"></i> Remove
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./src/main.js"></script>
+</body>
+</html>

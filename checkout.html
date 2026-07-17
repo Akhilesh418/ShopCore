@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout - ShopCore</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./src/style.css">
+
+    <style>
+        /* Automatically speeds up across the screen, skids into a hard brake, expands and blasts */
+        @keyframes cartDriveExplode {
+            0% { left: -15%; transform: translateY(-50%) scale(0.9) rotate(0deg); }
+            45% { left: 50%; transform: translateY(-50%) translateX(-50%) scale(1) rotate(-8deg); }
+            60% { left: 50%; transform: translateY(-50%) translateX(-50%) scale(1) rotate(6deg); }
+            75% { left: 50%; transform: translateY(-50%) translateX(-50%) scale(1.05) rotate(-3deg); }
+            90% { left: 50%; transform: translateY(-50%) translateX(-50%) scale(1.1) rotate(0deg); }
+            100% { left: 50%; transform: translateY(-50%) translateX(-50%) scale(1.4); filter: blur(1px); opacity: 0.8; }
+        }
+
+        .cart-run-sequence {
+            animation: cartDriveExplode 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        /* Fluid scale physics transformation to present the success information gracefully */
+        @keyframes structuralScaleUp {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .scale-up-center {
+            animation: structuralScaleUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-body-secondary d-flex flex-column min-vh-100">
+    
+    <main class="container my-5 flex-grow-1">
+        
+        <nav class="mb-4" aria-label="Secondary navigation">
+            <a href="cart.html" class="btn btn-outline-secondary rounded-pill px-4 shadow-sm">
+                <i class="bi bi-arrow-left me-1"></i> Return to Cart
+            </a>
+        </nav>
+               
+        <div class="row gx-5">
+            
+            <section class="col-lg-7 mb-5" aria-label="Shipping Information">
+                <header>
+                    <h1 class="h3 mb-2 fw-normal">Shipping Information</h1>
+                    <p class="text-muted mb-4">Enter your shipping details below to proceed.</p>
+                </header>
+                
+                <form id="checkoutForm">
+                      <div class="row">
+                          <div class="col-md-6 mb-3">
+                              <label for="firstName" class="form-label text-muted small text-uppercase fw-bold">First Name</label>
+                              <input type="text" class="form-control bg-body-tertiary border-0 py-2 shadow-sm" id="firstName" autocomplete="given-name" required>
+                          </div>
+                          <div class="col-md-6 mb-3">
+                              <label for="lastName" class="form-label text-muted small text-uppercase fw-bold">Last Name</label>
+                              <input type="text" class="form-control bg-body-tertiary border-0 py-2 shadow-sm" id="lastName" autocomplete="family-name" required>
+                          </div>
+                      </div>
+
+                      <div class="mb-3">
+                          <label for="address" class="form-label text-muted small text-uppercase fw-bold">Street Address</label>
+                          <input type="text" class="form-control bg-body-tertiary border-0 py-2 shadow-sm" id="address" placeholder="House number and street name" autocomplete="street-address" required>
+                      </div>
+
+                      <div class="row">
+                          <div class="col-md-4 mb-3">
+                              <label for="city" class="form-label text-muted small text-uppercase fw-bold">City</label>
+                              <input type="text" class="form-control bg-body-tertiary border-0 py-2 shadow-sm" id="city" autocomplete="address-level2" required>
+                          </div>
+                          <div class="col-md-4 mb-3">
+                              <label for="country" class="form-label text-muted small text-uppercase fw-bold">Country</label>
+                              <select class="form-select bg-body-tertiary border-0 py-2 shadow-sm" id="country" autocomplete="country" required>
+                                  <option value="US">United States</option>
+                                  <option value="UK">United Kingdom</option>
+                                  <option value="CA">Canada</option>
+                                  <option value="IN">India</option>
+                              </select>
+                          </div>
+                          <div class="col-md-4 mb-3">
+                              <label for="zip" class="form-label text-muted small text-uppercase fw-bold">Postal Code</label>
+                              <input type="text" class="form-control bg-body-tertiary border-0 py-2 shadow-sm" id="zip" autocomplete="postal-code" required>
+                          </div>
+                      </div>
+
+                      <fieldset class="mb-4 mt-3 border-top pt-4">
+                          <legend class="form-label text-muted small text-uppercase fw-bold float-none w-auto">Contact Information</legend>
+                          
+                          <label class="visually-hidden" for="email">Email Address</label>
+                          <input type="email" class="form-control bg-body-tertiary border-0 py-2 mb-3 shadow-sm" id="email" placeholder="email@example.com" autocomplete="email" required>
+                          
+                          <label class="visually-hidden" for="phone">Phone Number</label>
+                          <input type="tel" class="form-control bg-body-tertiary border-0 py-2 shadow-sm" id="phone" placeholder="Phone Number" autocomplete="tel" required>
+                      </fieldset>
+
+                      <div class="mb-5">
+                          <h2 class="h5 mb-3 fw-normal mt-4">Delivery Method</h2>
+                          <div class="border rounded p-3 d-flex justify-content-between align-items-center bg-body-tertiary border-secondary shadow-sm" aria-current="true">
+                              <div>
+                                  <h3 class="h6 mb-1 text-uppercase small fw-bold">Standard Delivery</h3>
+                                  <span class="text-muted small">3-5 Business Days</span>
+                              </div>
+                              <span class="fw-bold small text-success">Free</span>
+                          </div>
+                      </div>
+
+                      <button type="submit" class="btn btn-primary w-100 py-3 text-uppercase fw-bold shadow-sm" style="letter-spacing: 1px;">
+                          Place Order (COD) <i class="bi bi-arrow-right ms-2"></i>
+                      </button>
+                </form>
+            </section>
+
+            <aside class="col-lg-5" aria-label="Order Summary">
+                <div class="card p-4 shadow-sm border-0 bg-body-tertiary sticky-top" style="border-radius: 8px; top: 80px; z-index: 1000;">
+                    <h2 class="h5 mb-4 fw-normal">Order Summary</h2>
+                    
+                    <div id="checkoutSummary" aria-live="polite"></div>
+
+                    <div class="border-top pt-4 mt-2">
+                        <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
+                            <span>Subtotal</span>
+                            <span id="summarySubtotal" class="fw-medium text-body">₹0.00</span> 
+                        </div>
+                        <div class="d-flex justify-content-between mb-2 text-muted" style="font-size: 0.9rem;">
+                            <span>Shipping</span>
+                            <span class="text-success fw-medium">Free</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-4 text-muted" style="font-size: 0.9rem;">
+                            <span>Taxes</span>
+                            <span id="summaryTaxes" class="fw-medium text-body">₹0.00</span> 
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-4 border-top pt-3">
+                            <span class="text-uppercase fw-bold" style="letter-spacing: 1px; font-size: 0.95rem;">TOTAL</span>
+                            <h4 class="mb-0 fw-bold text-primary" id="checkoutTotal">₹0.00</h4> 
+                        </div>
+                    </div>
+
+                    <div class="p-3 rounded d-flex align-items-start mt-2 bg-body-secondary border">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="var(--bs-primary)" class="bi bi-shield-check me-3 mt-1 flex-shrink-0" viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.323.136.168.058.28.083t.15.025q-.004 0 .003-.001t.01-.005a2 2 0 0 0 .02-.01q.092-.047.23-.118.14-.072.319-.172a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"/>
+                            <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                        </svg>
+                        <div>
+                            <p class="mb-1 text-primary" style="font-size: 0.65rem; font-weight: 700; letter-spacing: 0.5px;">SHOPCORE GUARANTEE</p>
+                            <p class="mb-0 text-muted" style="font-size: 0.8rem;">30-day effortless returns on all boutique items.</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <template id="checkoutItemTemplate">
+        <div class="d-flex align-items-center mb-4">
+            <div class="position-relative me-3">
+                <div class="bg-body-secondary rounded border-0 d-flex justify-content-center align-items-center" style="width: 75px; height: 75px;">
+                    <img class="chk-img" src="" alt="Product Image" style="max-width: 55px; max-height: 55px; object-fit: contain;">
+                </div>
+                <span class="chk-qty position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark border border-white" style="font-size: 0.75rem; padding: 0.4em 0.6em;">
+                </span>
+            </div>
+            <div class="flex-grow-1 pe-3">
+                <h3 class="chk-title mb-1 fw-bold h6" style="font-size: 0.85rem; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden;"></h3>
+                <small class="chk-subtitle text-muted text-uppercase" style="font-size: 0.70rem; letter-spacing: 0.5px;">ShopCore Collection</small>
+            </div>
+            <div class="text-end">
+                <span class="chk-price fw-bold text-body" style="font-size: 0.95rem;"></span>
+            </div>
+        </div>
+    </template>
+
+    <div id="orderAnimationOverlay" role="alert" class="position-fixed top-0 start-0 w-100 h-100 d-none flex-column justify-content-center align-items-center bg-body" style="z-index: 9999; opacity: 0.99;">
+        
+        <div id="animationStage" class="position-relative text-center w-100" style="height: 250px; overflow: hidden;" aria-hidden="true">
+            <div id="movingCart" class="position-absolute top-50 translate-middle-y" style="left: -15%;">
+                <i class="bi bi-cart-fill text-primary" style="font-size: 5rem;"></i>
+            </div>
+        </div>
+
+        <div id="successMessageStage" class="text-center d-none scale-up-center">
+            <i class="bi bi-patch-check-fill text-success mb-3" style="font-size: 6.5rem;" aria-hidden="true"></i>
+            <h2 class="fw-bold text-body display-5 mb-2" style="letter-spacing: -0.5px;">Congratulations!</h2>
+            <p class="text-muted fs-5 mb-4">Your order has been placed successfully.</p>
+            <div class="spinner-border text-primary" role="status" style="width: 1.8rem; height: 1.8rem; border-width: 0.2em;">
+                <span class="visually-hidden">Loading receipt...</span>
+            </div>
+            <p class="text-muted small mt-2 fw-bold">Generating invoice and receipt details...</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script type="module" src="./src/main.js"></script>
+    <script type="module" src="./src/checkout.js"></script>
+</body>
+</html>

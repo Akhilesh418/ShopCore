@@ -1,0 +1,195 @@
+/**
+ * style.css
+ * Global stylesheet for ShopCore.
+ * Architecture: 
+ * 1. Design Tokens (Variables)
+ * 2. Framework Overrides
+ * 3. Base Elements
+ * 4. Components
+ * 5. Animations
+ * 6. Layouts (Footer)
+ */
+
+/* ==========================================================================
+   1. DESIGN TOKENS (Variables)
+   ========================================================================== */
+:root {
+    /* Brand Colors */
+    --theme-primary: #0dcaf0;
+    --theme-primary-hover: #0baccb;
+    --white: #ffffff;
+    
+    /* UI Elements */
+    --card-shadow-hover: rgba(0, 0, 0, 0.15);
+    --focus-ring-color: rgba(13, 202, 240, 0.5); /* Cyan with opacity for accessibility outlines */
+    
+    /* Footer Theme */
+    --footer-bg: #111111;
+    --footer-accent-cyan: #0dcaf0;
+    --footer-text-muted: #a0a0a0;
+    --footer-text-light: #b0b0b0;
+
+    /* * ENTERPRISE TRICK: Override Bootstrap 5's internal variables directly!
+     * This eliminates the need for messy '!important' tags later on.
+     */
+    --bs-primary: var(--theme-primary);
+    --bs-primary-rgb: 13, 202, 240; /* RGB needed for Bootstrap's background opacities */
+}
+
+/* ==========================================================================
+   DARK MODE ADAPTATIONS
+   ========================================================================== */
+[data-bs-theme="dark"] {
+    /* Dim the bright cyan slightly to reduce eye strain in dark environments */
+    --theme-primary: #0aa2c0; 
+    --theme-primary-hover: #088da7;
+    
+    /* Re-map Bootstrap variables for dark mode */
+    --bs-primary: var(--theme-primary);
+}
+
+/* Ensure text on primary buttons remains readable against the bright cyan background */
+[data-bs-theme="dark"] .btn-primary {
+    --bs-btn-color: #1a1d20;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   2. ACCESSIBILITY (A11y) & BASE OVERRIDES
+   ========================================================================== */
+body { 
+    /* Modern, system-native font stack for optimal performance and legibility */
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    /* Smooth scrolling behavior for anchor links */
+    scroll-behavior: smooth; 
+}
+
+/* * Focus-Visible ensures that focus rings only appear when navigating via keyboard,
+ * not when clicking with a mouse, keeping the UI clean but accessible.
+ */
+:focus-visible {
+    outline: 3px solid var(--focus-ring-color);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   3. COMPONENTS
+   ========================================================================== */
+
+/* --- Product Cards --- */
+.card-img-top {
+    height: 200px;
+    object-fit: contain; /* Prevents image distortion */
+    padding: 1rem;
+    background-color: var(--white);
+}
+
+.product-card { 
+    /* 'will-change' warns the browser to prepare the GPU for these specific animations */
+    will-change: transform, box-shadow;
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1); 
+}
+
+.product-card:hover { 
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 24px var(--card-shadow-hover) !important; /* Overriding BS shadow */
+}
+
+/* --- Filter Sidebar --- */
+.list-group-item {
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    will-change: transform;
+}
+
+/* Subtle scaling interaction without shifting surrounding layout */
+.list-group-item:hover:not(.active) {
+    transform: scale(1.01); 
+    color: var(--theme-primary); 
+    z-index: 1; /* Prevents overlapping clipping during scale */
+}
+
+/* ==========================================================================
+   4. ANIMATIONS (Performance Optimized)
+   ========================================================================== */
+@keyframes pulse {
+    0% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.4; }
+}
+
+/* Skeleton loader restricted to opacity to prevent expensive layout repaints */
+.skeleton-card .bg-secondary { 
+    animation: pulse 1.5s infinite ease-in-out; 
+    will-change: opacity;
+}
+
+/* ==========================================================================
+   5. LAYOUT: FOOTER
+   ========================================================================== */
+.shopcore-footer {
+    background-color: var(--footer-bg); 
+    border-top: 1px solid #dee2e6; 
+}
+
+/* Scope link transitions tightly to the footer to prevent global side-effects */
+.shopcore-footer a {
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footer-links a, 
+.footer-bottom-links a {
+    color: var(--footer-text-muted);
+    text-decoration: none;
+}
+
+.footer-links a:hover, 
+.footer-bottom-links a:hover {
+    color: var(--white);
+}
+
+/* Social Icons layout using Flexbox for perfect centering */
+.social-icons a {
+    display: inline-flex; /* Better than flex for inline elements */
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: var(--white);
+    text-decoration: none;
+    will-change: transform;
+}
+
+.social-icons a:hover,
+.social-icons a:focus-visible {
+    transform: translateY(-3px);
+    opacity: 0.9;
+}
+
+/* Accordion Overrides for dark theme */
+.footer-accordion .accordion-button {
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Inverts the SVG arrow icon to white so it's visible on a black background */
+.footer-accordion .accordion-button::after {
+    filter: invert(1); 
+}
+
+.footer-accordion .accordion-button:not(.collapsed) {
+    color: var(--footer-accent-cyan);
+    background-color: transparent;
+    box-shadow: none; /* Removes default Bootstrap blue glow */
+}
+
+.category-cloud a {
+    color: var(--footer-text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+.category-cloud a:hover {
+    color: var(--footer-accent-cyan);
+    text-decoration: underline;
+}
