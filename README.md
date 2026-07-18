@@ -3,7 +3,7 @@
 A dynamic, frontend-focused e-commerce web application engineered without a traditional backend. ShopCore utilizes advanced vanilla JavaScript, modern state management, and the Web Storage API to create a seamless, high-performance shopping experience.
 
 ## 🚀 Live Demo
-*(You can paste your Vercel live hosted link here later!)*
+https://shop-core-pg9iasqpe-akhilesh418s-projects.vercel.app
 
 ## 💡 System Architecture & Features
 
