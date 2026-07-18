@@ -52,7 +52,8 @@ async function handleLogin(e) {
     const sessionUser = { 
         id: validUser.id, 
         name: validUser.name, 
-        email: validUser.email 
+        email: validUser.email,
+        phone: validUser.phone 
     };
     
     localStorage.setItem('store_user', JSON.stringify(sessionUser));
